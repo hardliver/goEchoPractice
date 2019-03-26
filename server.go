@@ -116,6 +116,14 @@ func main() {
     Format: `[${time_rfc3339}] ${status} ${method} ${host}${path} ${latency_human}` + "\n",
   }))
 
+  g.Use(middleware.BasicAuth(func(username, password string, c echo.Context) (bool, error) {
+    // check in the DB
+    if username == "jack" && password == "1234" {
+      return true, nil
+    }
+    return false, nil
+  }))
+
   g.GET("/main", mainAdmin)
 
 	e.GET("/", yallo)
